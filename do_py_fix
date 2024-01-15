@@ -1,0 +1,27 @@
+#!/bin/bash
+
+filename=""
+
+while getopts ":n:" opt; do
+  case $opt in
+    n)
+      filename=$OPTARG
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [ -z "$filename" ]; then
+  echo "Fixing all .py files"
+  autopep8 --in-place --aggressive *.py
+else
+  echo "Fixing $filename"
+  autopep8 --in-place --aggressive "$filename"
+fi
